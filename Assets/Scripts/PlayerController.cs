@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 0; // selectable speed multiplier
     public TextMeshProUGUI countText; // text object for score count
     public GameObject winTextObject; // text object for win message
+    public GameObject player_camera; // camera for player view, used to determine forward direction
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,8 +25,30 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate() 
     {
-        Vector3 movement = new Vector3 (movementX, 0.0f, movementY);
-        rb.AddForce(movement * speed);
+        Vector3 camera_forward = player_camera.transform.forward;
+        Vector3 camera_right = player_camera.transform.right;
+        // forward/back direction
+        if (movementY < 0)
+        {
+            camera_forward = -camera_forward;
+        }
+        else if (movementY == 0)
+        {
+            camera_forward = Vector3.zero;
+        }
+
+        // left/right direction
+        if (movementX < 0)
+        {
+            camera_right = -camera_right;
+        }
+        else if (movementX == 0)
+        {
+            camera_right = Vector3.zero;
+        }
+        // rotate to camera
+        Vector3 movement = new Vector3 (camera_forward.x + camera_right.x, 0.0f, camera_forward.z + camera_right.z);
+        rb.AddForce(movement.normalized * speed);
     }
 
     void OnTriggerEnter(Collider other) 
