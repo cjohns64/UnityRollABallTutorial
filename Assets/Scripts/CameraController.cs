@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
             float singleStep = speed * Time.deltaTime;
 
             // Rotate the forward vector towards the target direction by one step
-            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
+            Vector3 newDirection = Vector3.RotateTowards(new Vector3 (transform.forward.x, 0.0f, transform.forward.z), targetDirection, singleStep, 0.0f);
 
             // Draw a ray pointing at our target in
             Debug.DrawRay(transform.position, newDirection, Color.red);
